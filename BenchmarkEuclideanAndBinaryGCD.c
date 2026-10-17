@@ -19,22 +19,25 @@ unsigned int BinaryGCD(unsigned int a, unsigned int b)
 {
     if (a == 0) return b;
     if (b == 0) return a;
+    
     int Count2 = 0;
-    while (a % 2 == 0 && b % 2 == 0)
+    while ((a & 1) == 0 && (b & 1) == 0)
     {
-        a /= 2;
-        b /= 2;
+        a >>= 1;
+        b >>= 1;
         Count2++;
     }
-    while (a % 2 == 0)
+    
+    while ((a & 1) == 0)
     {
-        a /= 2;
+        a >>= 1;
     }
-    do
+    
+    while (b != 0)
     {
-        while (b % 2 == 0)
+        while ((b & 1) == 0)
         {
-            b /= 2;
+            b >>= 1;
         }
         if (a > b)
         {
@@ -43,10 +46,9 @@ unsigned int BinaryGCD(unsigned int a, unsigned int b)
             b = temp;
         }
         b -= a;
-    } while (b != 0);
-    return a * (1 << Count2);
+    }
+    return a << Count2; 
 }
-
 
 int main(void) {
     printf("EUCLIDEAN ALGORITHM\n");
