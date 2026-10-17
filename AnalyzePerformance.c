@@ -11,7 +11,6 @@ void ExplainBinaryGCD_WorkedExample(unsigned int a, unsigned int b)
 
     while (v != 0) 
     {
-        // Sử dụng %% để in ra ký tự '%' trong printf
         printf("   Step %d: %u %% %u = %u\n", step++, u, v, u % v);
         unsigned int temp = v;
         v = u % v;
