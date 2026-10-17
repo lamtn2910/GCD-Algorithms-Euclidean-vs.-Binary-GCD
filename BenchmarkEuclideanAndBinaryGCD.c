@@ -14,12 +14,11 @@ int gcd(int a, int b) {
     return a;
 }
 
-
 unsigned int BinaryGCD(unsigned int a, unsigned int b)
 {
     if (a == 0) return b;
     if (b == 0) return a;
-    
+
     int Count2 = 0;
     while ((a & 1) == 0 && (b & 1) == 0)
     {
@@ -27,12 +26,12 @@ unsigned int BinaryGCD(unsigned int a, unsigned int b)
         b >>= 1;
         Count2++;
     }
-    
+
     while ((a & 1) == 0)
     {
         a >>= 1;
     }
-    
+
     while (b != 0)
     {
         while ((b & 1) == 0)
@@ -47,8 +46,63 @@ unsigned int BinaryGCD(unsigned int a, unsigned int b)
         }
         b -= a;
     }
-    return a << Count2; 
+    return a << Count2;
 }
+
+int gcdSteps(int a, int b) {
+    int steps = 0;
+    while (b != 0) {
+        int r = a % b;
+        a = b;
+        b = r;
+        steps++;
+    }
+    return steps;
+}
+
+
+int BinaryGCDSteps(unsigned int a, unsigned int b)
+{
+    int steps = 0;
+
+    if (a == 0 || b == 0) return steps;
+
+    while ((a & 1) == 0 && (b & 1) == 0)
+    {
+        a >>= 1;
+        b >>= 1;
+        steps++;
+    }
+
+    while ((a & 1) == 0)
+    {
+        a >>= 1;
+        steps++;
+    }
+
+    while (b != 0)
+    {
+        while ((b & 1) == 0)
+        {
+            b >>= 1;
+            steps++;
+        }
+
+        if (a > b)
+        {
+            unsigned int temp = a;
+            a = b;
+            b = temp;
+            steps++;
+        }
+
+        b -= a;
+        steps++;
+    }
+
+    return steps;
+}
+
 
 int main(void) {
     printf("EUCLIDEAN ALGORITHM\n");
@@ -63,11 +117,19 @@ int main(void) {
     double maxTime;
     double minTime;
 
+    int steps;
+    int totalSteps;
+    int maxSteps;
+    int minSteps;
+
     srand(time(NULL));
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
         a = rand() % 90000 + 10001;
@@ -89,18 +151,28 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = gcdSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
-    printf("Min time: %.15f\n\n", minTime);
-
+    printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n\n", minSteps);
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
 
@@ -125,18 +197,28 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = gcdSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
-    printf("Min time: %.15f\n\n", minTime);
-
+    printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n\n", minSteps);
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
 
@@ -163,13 +245,21 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = gcdSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
     printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n", minSteps);
 
     }
 
@@ -185,10 +275,17 @@ int main(void) {
     double maxTime;
     double minTime;
 
+    int steps;
+    int totalSteps;
+    int maxSteps;
+    int minSteps;
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
         a = rand() % 90000 + 10001;
@@ -210,18 +307,28 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = BinaryGCDSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
-    printf("Min time: %.15f\n\n", minTime);
-
+    printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n\n", minSteps);
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
 
@@ -246,18 +353,28 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = BinaryGCDSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
-    printf("Min time: %.15f\n\n", minTime);
-
+    printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n\n", minSteps);
 
     totalTime = 0;
     maxTime = 0;
     minTime = 0;
+    totalSteps = 0;
+    maxSteps = 0;
+    minSteps = 0;
 
     for (int i = 0; i < N; i++) {
 
@@ -284,13 +401,21 @@ int main(void) {
         if (elapsedTime > maxTime) maxTime = elapsedTime;
         if (i == 0 || elapsedTime < minTime) minTime = elapsedTime;
 
-        printf("(%d,%d) %.15f\n", a, b, elapsedTime);
+        steps = BinaryGCDSteps(a, b);
+        totalSteps += steps;
+        if (steps > maxSteps) maxSteps = steps;
+        if (i == 0 || steps < minSteps) minSteps = steps;
+
+        printf("(%d,%d) %.15f | Steps: %d\n", a, b, elapsedTime, steps);
     }
 
     printf("=> %.15f\n", totalTime / N);
     printf("Average time: %.15f\n", totalTime / N);
     printf("Max time: %.15f\n", maxTime);
     printf("Min time: %.15f\n", minTime);
+    printf("Average step: %.2f\n", (double)totalSteps / N);
+    printf("Max step: %d\n", maxSteps);
+    printf("Min step: %d\n", minSteps);
 
     }
     return 0;
